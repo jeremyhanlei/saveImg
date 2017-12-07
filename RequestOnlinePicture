@@ -1,0 +1,29 @@
+//必须在子线程中执行，不允许在主线程中直接进行网络请求。
+public static void decodeBitmap(Context context,String httpUrl) {
+        URL url = null;
+        Bitmap bm = null;
+        try {
+            url = new URL(httpUrl);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        try {
+        
+            InputStream in = url.openStream();
+            bm = BitmapFactory.decodeStream(in);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        boolean isSaveSuccess = ImgSaveUtils.saveImageToGallery(context,bm);
+        //在子线程中要想执行Toast必须先创建Looper对象，使其加入消息队列才可进行正常显示;
+        Looper.prepare();
+        if(isSaveSuccess){
+            LogUtil.i("保存图片成功，位于名为：rpbb 的相册中");
+            ToastUtil.showLong("保存图片成功，位于名为：rpbb 的相册中");
+        }else{
+            LogUtil.i("保存图片失败，请稍后重试");
+            ToastUtil.showLong("保存图片失败，请稍后重试");
+        }
+        Looper.loop();
+    }

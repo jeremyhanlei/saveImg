@@ -26,4 +26,4 @@ public static void decodeBitmap(Context context,String httpUrl) {
             ToastUtil.showLong("保存图片失败，请稍后重试");
         }
         Looper.loop();
-    }
+}
